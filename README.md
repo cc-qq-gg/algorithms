@@ -12,6 +12,7 @@
 > 2. 空间复杂度：
 
 两数之和
+
 给定一个整数数组 nums 和一个整数目标值 target，请你在该数组中找出 和为目标值 target 的那 两个 整数，并返回它们的数组下标。
 
 ```js
@@ -40,5 +41,26 @@ var twoSum = function (nums, target) {
     }
   }
   return result
+}
+```
+
+经典二分查找
+
+```js
+var search = function (nums, target) {
+  let low = 0
+  let high = nums.length - 1
+  while (low <= high) {
+    const mid = Math.floor((high - low) / 2) + low
+    const num = nums[mid]
+    if (num === target) {
+      return mid
+    } else if (num > target) {
+      high = mid - 1
+    } else {
+      low = mid + 1
+    }
+  }
+  return -1
 }
 ```
