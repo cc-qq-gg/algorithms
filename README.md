@@ -51,16 +51,36 @@ var search = function (nums, target) {
   let low = 0
   let high = nums.length - 1
   while (low <= high) {
-    const mid = Math.floor((high - low) / 2) + low
-    const num = nums[mid]
+    const midIdx = Math.floor((high - low) / 2) + low
+    const num = nums[midIdx]
     if (num === target) {
-      return mid
+      return midIdx
     } else if (num > target) {
-      high = mid - 1
+      high = midIdx - 1
     } else {
-      low = mid + 1
+      low = midIdx + 1
     }
   }
   return -1
+}
+```
+
+二分法的应用：第一个错误版本
+
+```java
+public class Solution extends VersionControl {
+    public int firstBadVersion(int n) {
+        int left = 1;
+        int right = n;
+        while(left < right) {
+            int version = left + (right - left) / 2;
+            if(isBadVersion(version)) {
+               right = version; // 答案区间[left, version]
+            } else {
+                left = version + 1; // 答案区间[left + 1, version]
+            }
+        }
+        return left;
+    }
 }
 ```
