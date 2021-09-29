@@ -88,7 +88,6 @@ public class Solution extends VersionControl {
 二分法应用：查找插入位置
 
 ```java
-
 class Solution {
     public int searchInsert(int[] nums, int target) {
         int left = 0;
@@ -103,17 +102,42 @@ class Solution {
             if (target ==  num) {
                 return idx;
             } else if (target > num) {
-               left += 1;
+              // 不对
+               left = idx + 1;
                // 判断下次是否为最后一次查找
                if (left == right) return right;
             } else {
-                right -= 1;
+              // 不对
+                right = idx - 1;
                // 判断下次是否为最后一次查找
                 if (left == right) return right;
             }
         }
 
        return 0;
+    }
+}
+// 这种更简洁
+class Solution {
+    public int searchInsert(int[] nums, int target) {
+        int left = 0;
+        int right = nums.length -1;
+        // 超出边界的情况
+        if (target < nums[left]) return 0;
+        if (target > nums[right]) return right + 1;
+        // left == right 时进行最后一次运算，
+        // ？
+        while(left <= right) {
+            int idx = (left + right) / 2;
+            int num = nums[idx];
+
+            if (target > num) {
+               left = idx + 1;
+            } else {
+                right = idx - 1;
+            }
+        }
+       return left;
     }
 }
 ```
