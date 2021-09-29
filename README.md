@@ -117,7 +117,7 @@ class Solution {
        return 0;
     }
 }
-// 这种更简洁
+// 这种更简洁，巧妙
 class Solution {
     public int searchInsert(int[] nums, int target) {
         int left = 0;
@@ -126,7 +126,7 @@ class Solution {
         if (target < nums[left]) return 0;
         if (target > nums[right]) return right + 1;
         // left == right 时进行最后一次运算，
-        // ？
+        // 倒数第二次运算时， left = right - 1
         while(left <= right) {
             int idx = (left + right) / 2;
             int num = nums[idx];
@@ -137,6 +137,7 @@ class Solution {
                 right = idx - 1;
             }
         }
+      // 只能返回left，巧妙
        return left;
     }
 }
