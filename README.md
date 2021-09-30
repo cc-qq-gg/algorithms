@@ -73,7 +73,7 @@ public class Solution extends VersionControl {
         int left = 1;
         int right = n;
         while(left < right) {
-            int version = left + (right - left) / 2;
+            int version = (right + left) / 2;
             if(isBadVersion(version)) {
                right = version; // 答案区间[left, version]
             } else {
@@ -140,5 +140,74 @@ class Solution {
       // 只能返回left，巧妙
        return left;
     }
+}
+```
+
+双指针查找：有序数组的平方
+
+> 一个递增的整数数组，返回每个数字的平方组成的递增数组
+
+```java
+class Solution {
+    public int[] sortedSquares(int[] nums) {
+       int n = nums.length;
+        int[] ans = new int[n];
+        for (int i = 0, j = n - 1, pos = n - 1; i <= j; ) {
+            int _i = nums[i] * nums[i];
+            int _j = nums[j] * nums[j];
+            if (_i > _j) {
+                ans[pos] = _i;
+                i++;
+            } else {
+                ans[pos] = _j;
+                j--;
+            }
+            pos--;
+        }
+        return ans;
+    }
+}
+```
+
+旋转数组
+
+> java 版，提交测试的时间消耗居然是 0
+
+```java
+class Solution {
+    public void rotate(int[] nums, int k) {
+        int len = nums.length;
+        k %= len; // 取余数，以适应超出数组长度的情况
+        if (k == 0) return;
+        int[] start = Arrays.copyOfRange(nums, len - k, len);
+        int[] end = Arrays.copyOf(nums, len - k);
+        // 拼接
+        System.arraycopy(start, 0, nums, 0, start.length);
+        System.arraycopy(end, 0, nums, start.length, end.length);
+    }
+}
+```
+
+> js 版，和 java 版内存消耗差不多，但耗时 100ms 左右
+
+```js
+var rotate = function (nums, k) {
+  k = k % nums.length
+  const temp = nums.slice(nums.length - k).concat(nums.slice(0, nums.length - k))
+  nums.splice(0, nums.length, ...temp)
+}
+
+// 数组翻转
+let reverse = function (nums, start, end) {
+  while (start < end) {
+    ;[nums[start++], nums[end--]] = [nums[end], nums[start]]
+  }
+}
+let rotate = function (nums, k) {
+  k %= nums.length
+  reverse(nums, 0, nums.length - 1)
+  reverse(nums, 0, k - 1)
+  reverse(nums, k, nums.length - 1)
+  return nums
 }
 ```
