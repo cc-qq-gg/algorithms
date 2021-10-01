@@ -245,6 +245,8 @@ var moveZeroes = function (nums) {
 
 双指针版两数之和
 
+> 这种方法不会漏掉的可能的值，应该是因为最大和最小的值分别在结尾和开头的两个数
+
 ```js
 var twoSum = function (numbers, target) {
   let low = 0
