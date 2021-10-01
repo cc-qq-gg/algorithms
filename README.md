@@ -211,3 +211,55 @@ let rotate = function (nums, k) {
   return nums
 }
 ```
+
+移动零
+
+```js
+// 第一个版本，性能较低300ms以上，应该是数组方法的原因
+var moveZeroes = function (nums) {
+  const n = nums.length
+  for (let i = 0, j = n - 1; i <= j; i++) {
+    if (nums[i] === 0) {
+      nums.splice(i, 1)
+      nums.push(0)
+      i--
+      j++
+    }
+  }
+}
+// 88ms
+var moveZeroes = function (nums) {
+  const n = nums.length
+  let j = 0
+  for (let i = 0; i < n; i++) {
+    // 前移非零数字，记录非零个数
+    if (nums[i] !== 0) {
+      const temp = nums[j]
+      nums[j] = nums[i]
+      nums[i] = temp
+      j++
+    }
+  }
+}
+```
+
+双指针版两数之和
+
+```js
+var twoSum = function (numbers, target) {
+  let low = 0
+  let high = numbers.length - 1
+  while (low < high) {
+    const sum = numbers[low] + numbers[high]
+    if (sum === target) {
+      return [low + 1, high + 1]
+    }
+    if (sum < target) {
+      low++
+    } else {
+      high--
+    }
+  }
+  return [-1, -1]
+}
+```
