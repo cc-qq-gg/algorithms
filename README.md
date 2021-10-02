@@ -284,3 +284,38 @@ var reverseString = function (s) {
   }
 }
 ```
+
+反转字符串中的单词
+
+```js
+var reverseWords = function (s) {
+  return s
+    .split(' ')
+    .map(i => i.split('').reverse().join(''))
+    .join(' ')
+}
+
+// todo 。。。
+var reverseWords = function (s) {
+  const ret = []
+  const length = s.length
+  let i = 0
+  while (i < length) {
+    let start = i
+    // 找到单词边界
+    while (i < length && s[i] != ' ') {
+      i++
+    }
+    // 反向填充找到的单词
+    for (let p = start; p < i; p++) {
+      ret.push(s[start + i - 1 - p])
+    }
+    // 判断边界，添加空格
+    while (i < length && s[i] == ' ') {
+      i++
+      ret.push(' ')
+    }
+  }
+  return ret.join('')
+}
+```
