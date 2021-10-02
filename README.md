@@ -265,3 +265,22 @@ var twoSum = function (numbers, target) {
   return [-1, -1]
 }
 ```
+
+双指针：反转字符串
+
+```js
+var reverseString = function (s) {
+  let i = 0
+  let j = s.length - 1
+  while (i < j) {
+    // 1.用temp暂存
+    const temp = s[i]
+    s[i] = s[j]
+    s[j] = temp
+    // 2.数组结构复制
+    // [s[i], s[j]] = [s[j], s[i]]
+    i++
+    j--
+  }
+}
+```
