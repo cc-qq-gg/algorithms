@@ -319,3 +319,27 @@ var reverseWords = function (s) {
   return ret.join('')
 }
 ```
+
+链表的中间结点 ？
+
+双指针：无重复字符的最长子串
+
+```js
+var lengthOfLongestSubstring = function (s) {
+  let n = 0
+  let t = 0
+  let arr = []
+  let max = 0
+  while (t < s.length) {
+    if (!arr.includes(s[t])) {
+      arr.push(s[t++])
+    } else {
+      n++
+      t = n + 1
+      max = Math.max(arr.length, max)
+      arr = [s[n]]
+    }
+  }
+  return Math.max(arr.length, max)
+}
+```
