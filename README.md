@@ -362,7 +362,7 @@ var lengthOfLongestSubstring = function (s) {
   }
   return Math.max(arr.size, max)
 }
-// 100ms
+// 100ms 滑动窗口
 var lengthOfLongestSubstring = function (s) {
   // 哈希集合，记录每个字符是否出现过
   const occ = new Set()
@@ -384,5 +384,120 @@ var lengthOfLongestSubstring = function (s) {
     ans = Math.max(ans, rk - i)
   }
   return ans
+}
+```
+
+双指针，滑动窗口：字符串的排列
+
+```js
+// 性能极差 7505ms
+var checkInclusion = function (s1, s2) {
+  const target = Array.from(s1).sort().toString()
+  let n2 = s2.length
+  let n1 = s1.length
+  let r = n1
+  let temp = Array.from(s2.slice(0, n1))
+  while (r <= n2) {
+    if (temp.slice().sort().toString() === target) {
+      return true
+    }
+    temp.shift()
+    temp.push(s2[r++])
+  }
+  return false
+}
+// 160ms，统计字母个数
+var checkInclusion = function (s1, s2) {
+  const n = s1.length,
+    m = s2.length
+  if (n > m) {
+    return false
+  }
+  const cnt1 = new Array(26).fill(0)
+  const cnt2 = new Array(26).fill(0)
+  const aCharCode = 'a'.charCodeAt()
+  for (let i = 0; i < n; ++i) {
+    ++cnt1[s1[i].charCodeAt() - aCharCode]
+    ++cnt2[s2[i].charCodeAt() - aCharCode]
+  }
+  if (cnt1.toString() === cnt2.toString()) {
+    return true
+  }
+  // 滑动窗口，每次比较
+  for (let i = n; i < m; ++i) {
+    ++cnt2[s2[i].charCodeAt() - aCharCode]
+    --cnt2[s2[i - n].charCodeAt() - aCharCode]
+    if (cnt1.toString() === cnt2.toString()) {
+      return true
+    }
+  }
+  return false
+}
+
+// 80ms 性能好到令人胆寒
+var checkInclusion = function checkInclusion(s1, s2) {
+  const n = s1.length
+  const m = s2.length
+  const aCharCode = 'a'.charCodeAt()
+  const getIndex = s => s.charCodeAt() - aCharCode
+  if (n > m) {
+    return false
+  }
+  // 用一个长度26的数组记录每个字母的差异，都为零则存在相等排列
+  const cnt = new Array(26).fill(0)
+  // 记录不同位的个数，首次挖坑填坑
+  let diff = 0
+  for (let i = 0; i < n; i++) {
+    // 挖
+    --cnt[getIndex(s1[i])]
+    // 补
+    ++cnt[getIndex(s2[i])]
+  }
+  for (const n of cnt) {
+    if (n !== 0) {
+      diff++
+    }
+  }
+  if (diff === 0) {
+    return true
+  }
+  // 移动窗口，尝试补坑
+  for (let i = n; i < m; i++) {
+    // 出字母位置
+    const x = getIndex(s2[i - n])
+    // 进字母位置
+    const y = getIndex(s2[i])
+    // 如果进出相同，跳过
+    if (x === y) {
+      continue
+    }
+    // 之前相等
+    if (cnt[x] === 0) {
+      diff++
+    }
+    // 移出窗口
+    --cnt[x]
+    // 之后相等
+    if (cnt[x] === 0) {
+      diff--
+    }
+
+    // y同理
+    if (cnt[y] === 0) {
+      diff++
+    }
+    // 进入窗口
+    ++cnt[y]
+    // 之后相等
+    if (cnt[y] === 0) {
+      diff--
+    }
+
+    // 如果坑被填完
+    if (diff === 0) {
+      return true
+    }
+  }
+  return false
 }
 ```
