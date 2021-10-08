@@ -501,3 +501,67 @@ var checkInclusion = function checkInclusion(s1, s2) {
   return false
 }
 ```
+
+深度优先，广度优先：岛屿最大面积
+
+```java
+class Solution {
+    public int maxAreaOfIsland(int[][] grid) {
+        int ans = 0;
+        // 嵌套循环，遍历每项
+        for (int i = 0; i < grid.length; ++i) {
+            for (int j = 0; j != grid[0].length; ++j) {
+                ans = Math.max(ans, dfs(grid, i, j));
+            }
+        }
+        return ans;
+    }
+
+    public int dfs(int[][] grid, int cur_i, int cur_j) {
+        // 判断边界，是否土地
+        if (cur_i < 0 || cur_j < 0 || cur_i == grid.length || cur_j == grid[0].length || grid[cur_i][cur_j] != 1) {
+            return 0;
+        }
+        grid[cur_i][cur_j] = 0;
+        int[] di = {0, 0, 1, -1};
+        int[] dj = {1, -1, 0, 0};
+        int ans = 1;
+        // 递归四个方向
+        for (int index = 0; index < 4; ++index) {
+            int next_i = cur_i + di[index];
+            int next_j = cur_j + dj[index];
+            ans += dfs(grid, next_i, next_j);
+        }
+        return ans;
+    }
+}
+```
+
+```js
+var maxAreaOfIsland = function (grid) {
+  let ans = 0
+  const row = [1, -1, 0, 0]
+  const col = [0, 0, -1, 1]
+  const dfs = (grid, i, j) => {
+    // 判断边界以及是否为土地
+    if (i < 0 || i === grid.length || j < 0 || j === grid[0].length || grid[i][j] !== 1) {
+      return 0
+    }
+    // 保证每个点只查一次
+    grid[i][j] = 0
+    // 记录每个点的相邻土地节点
+    let ans = 1
+    // 递归查找四个方向
+    for (let n = 0; n < 4; n++) {
+      ans += dfs(grid, i + row[n], j + col[n])
+    }
+    return ans
+  }
+  grid.forEach((_, i) => {
+    grid[i].forEach((_, j) => {
+      ans = Math.max(ans, dfs(grid, i, j))
+    })
+  })
+  return ans
+}
+```
