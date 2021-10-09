@@ -565,3 +565,59 @@ var maxAreaOfIsland = function (grid) {
   return ans
 }
 ```
+
+深度优先：图像渲染
+
+```js
+// 80ms
+var floodFill = function (image, sr, sc, newColor) {
+  const current = image[sr][sc]
+  const row = [1, -1, 0, 0]
+  const col = [0, 0, -1, 1]
+  const rn = image.length
+  const cn = image[0].length
+  const dfs = (image, r, c) => {
+    if (r >= 0 && c >= 0 && r < rn && c < cn) {
+      if (image[r][c] === current) {
+        image[r][c] = newColor
+        for (let i = 0; i < 4; i++) {
+          dfs(image, r + row[i], c + col[i])
+        }
+      }
+    }
+  }
+  if (current !== newColor) {
+    // 从中心点开始查询
+    dfs(image, sr, sc)
+  }
+  return image
+}
+```
+
+```java
+// 1ms
+class Solution {
+
+    int[] row = {1, -1, 0, 0};
+    int[] col = {0, 0, 1, -1};
+
+    public int[][] floodFill(int[][] image, int sr, int sc, int newColor) {
+        int color = image[sr][sc];
+        if (color != newColor) {
+            dfs(image, sr, sc, color, newColor);
+        }
+        return image;
+    }
+
+    public void dfs(int[][] image, int sr, int sc, int color, int newColor) {
+        if (sr >= 0 && sc >= 0 && sr < image.length && sc < image[0].length) {
+            if (image[sr][sc] == color) {
+                image[sr][sc] = newColor;
+                for (int i = 0; i < 4; i++) {
+                    dfs(image, sr + row[i], sc + col[i], color, newColor);
+                }
+            }
+        }
+    }
+}
+```
