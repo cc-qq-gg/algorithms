@@ -687,7 +687,7 @@ var orangesRotting = function (grid) {
     round++
     const n = qune.length
     for (let i = 0; i < n; i++) {
-      // 用pop用问题，卡这里半天
+      // 当push和pop或 unshift 和 shift的时候，结果错误
       const [r, c] = qune.shift()
       for (let j = 0; j < 4; j++) {
         const _r = r + row[j]
