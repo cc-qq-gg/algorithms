@@ -688,6 +688,7 @@ var orangesRotting = function (grid) {
     const n = qune.length
     for (let i = 0; i < n; i++) {
       // 当push和pop或 unshift 和 shift的时候，结果错误
+      // 上述原因是，后进后出的方式是错的，导致这一轮用到下一轮的数据，
       const [r, c] = qune.shift()
       for (let j = 0; j < 4; j++) {
         const _r = r + row[j]
