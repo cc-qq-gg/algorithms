@@ -621,3 +621,90 @@ class Solution {
     }
 }
 ```
+
+深度优先：合并二叉树
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode mergeTrees(TreeNode root1, TreeNode root2) {
+      if(root1 == null) {
+          return root2;
+      }
+      if(root2 == null) {
+          return root1;
+      }
+      TreeNode merged = new TreeNode(root1.val + root2.val);
+      merged.left = mergeTrees(root1.left, root2.left);
+      merged.right = mergeTrees(root1.right, root2.right);
+      return merged;
+    }
+}
+```
+
+广度优先：腐烂的橘子
+
+```js
+var orangesRotting = function (grid) {
+  // 队列，广度优先搜索
+  const rn = grid.length
+  const cn = grid[0].length
+  const row = [1, -1, 0, 0]
+  const col = [0, 0, 1, -1]
+  // 遍历队列
+  const qune = []
+  // 轮数
+  let round = 0
+  // 新鲜数
+  let fresh = 0
+  for (let r = 0; r < rn; r++) {
+    for (let c = 0; c < cn; c++) {
+      const current = grid[r][c]
+      if (current === 1) {
+        fresh++
+      } else if (current === 2) {
+        // 第一轮
+        qune.push([r, c])
+      }
+    }
+  }
+  // 存在新鲜且队列不为空时继续遍历
+  while (fresh > 0 && qune.length) {
+    round++
+    const n = qune.length
+    for (let i = 0; i < n; i++) {
+      // 用pop用问题，卡这里半天
+      const [r, c] = qune.shift()
+      for (let j = 0; j < 4; j++) {
+        const _r = r + row[j]
+        const _c = c + col[j]
+        if (_r >= 0 && _c >= 0 && _r < rn && _c < cn) {
+          if (grid[_r][_c] === 1) {
+            fresh--
+            grid[_r][_c] = 2
+            qune.push([_r, _c])
+          }
+        }
+      }
+    }
+  }
+  if (fresh !== 0) {
+    return -1
+  }
+  return round
+}
+```
