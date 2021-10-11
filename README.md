@@ -709,3 +709,65 @@ var orangesRotting = function (grid) {
   return round
 }
 ```
+
+递归：合并两个有序列表
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+//  0ms ? 递归， 时间空间复杂杜都是O(m + n)
+// 判断 l1 和 l2 哪一个链表的头节点的值更小，然后递归地决定下一个添加到结果里的节点
+// 为空的时候退出递归
+// not clearly
+class Solution {
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        if(l1 == null) {
+            return l2;
+        }
+        if (l2 == null) {
+            return l1;
+        }
+        if(l1.val < l2.val) {
+          l1.next = mergeTwoLists(l1.next, l2);
+          return l1;
+        } else {
+          l2.next = mergeTwoLists(l2.next, l1);
+          return l2;
+        }
+    }
+}
+// 迭代的方式比较好东懂些
+class Solution {
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        ListNode prehead = new ListNode(-1);
+        // 指针
+        ListNode pre = prehead;
+        while(l1 != null && l2 != null){
+           if(l1.val <= l2.val) {
+               pre.next = l1;
+               // 移动指针
+               l1 = l1.next;
+           } else {
+               pre.next = l2;
+               // 移动指针
+               l2 = l2.next;
+           }
+           // 移动指针
+           pre = pre.next;
+        }
+
+        // 相当长度迭代完成后剩下的部分
+        pre.next = l1 == null ? l2 : l1;
+
+        return prehead.next;
+    }
+}
+```
