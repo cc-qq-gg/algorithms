@@ -771,3 +771,34 @@ class Solution {
     }
 }
 ```
+
+反转链表
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode reverseList(ListNode head) {
+      // 把当前节点的指针指向上一个节点
+      ListNode current = head;
+      ListNode prev = null;
+      while(current != null) {
+          // 记录当前的next
+          ListNode next = current.next;
+          current.next = prev;
+          // 移动指针
+          prev = current;
+          current = next;
+      }
+      return prev;
+    }
+}
+```
