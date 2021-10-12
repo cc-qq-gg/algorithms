@@ -773,3 +773,35 @@ class Solution {
     }
 }
 ```
+
+最大子序列
+
+```java
+// 贪心算法
+class Solution {
+    public int maxSubArray(int[] nums) {
+        //子序列逐渐增加，每次增加找出最大和
+        int pre = 0, max = nums[0];
+        for (int num : nums) {
+             // pre代表之前序列的和，如果之前和小于零，则丢弃之前序列
+             pre = Math.max(pre+num,num);
+             max = Math.max(pre,max);
+        }
+        return max;
+    }
+}
+// 动态规划
+class Solution {
+    public int maxSubArray(int[] nums) {
+        // 动态规划的重点在于，如果前一项大于零有增益效果，则后一项+=前一项
+        int max = nums[0];
+        for (int i = 0; i < nums.length - 1; i++) {
+            if(nums[i] > 0) {
+                nums[i+1] += nums[i];
+            }
+            max = Math.max(max,nums[i+1]);
+        }
+        return max;
+    }
+}
+```
