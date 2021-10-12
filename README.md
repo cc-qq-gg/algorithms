@@ -88,35 +88,7 @@ public class Solution extends VersionControl {
 二分法应用：查找插入位置
 
 ```java
-class Solution {
-    public int searchInsert(int[] nums, int target) {
-        int left = 0;
-        int right = nums.length -1;
-        // 超出边界的情况
-        if (target < nums[left]) return 0;
-        if (target > nums[right]) return right + 1;
 
-        while(left <= right) {
-            int idx = (left + right) / 2;
-            int num = nums[idx];
-            if (target ==  num) {
-                return idx;
-            } else if (target > num) {
-              // 不对
-               left = idx + 1;
-               // 判断下次是否为最后一次查找
-               if (left == right) return right;
-            } else {
-              // 不对
-                right = idx - 1;
-               // 判断下次是否为最后一次查找
-                if (left == right) return right;
-            }
-        }
-
-       return 0;
-    }
-}
 // 这种更简洁，巧妙
 class Solution {
     public int searchInsert(int[] nums, int target) {
@@ -212,10 +184,11 @@ let rotate = function (nums, k) {
 }
 ```
 
-移动零
+双指针：移动零
 
 ```js
 // 第一个版本，性能较低300ms以上，应该是数组方法的原因
+// 删除0，并补零
 var moveZeroes = function (nums) {
   const n = nums.length
   for (let i = 0, j = n - 1; i <= j; i++) {
@@ -230,14 +203,12 @@ var moveZeroes = function (nums) {
 // 88ms
 var moveZeroes = function (nums) {
   const n = nums.length
-  let j = 0
-  for (let i = 0; i < n; i++) {
-    // 前移非零数字，记录非零个数
-    if (nums[i] !== 0) {
-      const temp = nums[j]
-      nums[j] = nums[i]
-      nums[i] = temp
-      j++
+  let left = 0
+  for (let right = 0; right < n; right++) {
+    // left 指向处理完的列最后
+    if (nums[right] !== 0) {
+      ;[nums[left], nums[right]] = [nums[right], num[left]]
+      left++
     }
   }
 }
