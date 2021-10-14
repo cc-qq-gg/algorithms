@@ -821,4 +821,95 @@ var merge = function (nums1, m, nums2, n) {
   nums1.splice(m, nums1.length - m, ...nums2)
   return nums1.sort((a, b) => a - b)
 }
+
+// 最终，合并后数组不应由函数返回，而是存储在数组 l1 中。
+// 为了应对这种情况，nums1 的初始长度为 m + n
+var merge = function (l1, m, l2, n) {
+  // 创建两个各自的指针
+  // 创建目标位数空数组
+  // 循环填充空数组
+  //    边界：两个指针到头
+  //    一个数组添加完时，则添加另一个数组
+  // 最后赋值nums1
+  let p1 = 0,
+    p2 = 0
+  const sorted = new Array(m + n).fill(0)
+  let cur
+  while (p1 < m || p2 < n) {
+    if (p1 === m) {
+      cur = l2[p2++]
+    } else if (p2 === n) {
+      cur = l1[p1++]
+    } else if (l1[p1] < l2[p2]) {
+      cur = l1[p1++]
+    } else {
+      cur = l2[p2++]
+    }
+    sorted[p1 + p2 - 1] = cur
+  }
+  for (let i = 0; i < m + n; ++i) {
+    l1[i] = sorted[i]
+  }
+}
+// 逆向双指针，向后填充，可以理解为三指针
+// p1 会不会被覆盖？
+// 只需要比较已经填充的位置个数 和 p1后的位置个数
+// p1 后位置 m+n-p1-1
+// 每次填充的个数 n-p2-1 + m-p1-1
+// 假设 m+n-p1-1 > n-p2-1 + m-p1-1
+// 可得p2 > -1，恒成立
+var merge = function (l1, m, l2, n) {
+  let p1 = m - 1
+  let p2 = n - 1
+  let tail = m + n - 1 // 尾指针
+  let cur
+  while (p1 >= 0 || p2 >= 0) {
+    // 边界，即是数组的范围之外
+    if (p1 === -1) {
+      cur = l2[p2--]
+    } else if (p2 === -1) {
+      cur = l1[p1--]
+    } else if (l1[p1] > l2[p2]) {
+      cur = l1[p1--]
+    } else {
+      cur = l2[p2--]
+    }
+    // 向尾部添加
+    l1[tail--] = cur
+  }
+  return l1
+}
+```
+
+哈希表：求两个数组的交集
+
+```js
+/**
+ * @param {number[]} nums1
+ * @param {number[]} nums2
+ * @return {number[]}
+ */
+var intersect = function (nums1, nums2) {
+  // 遍历较短的数组
+  if (nums2.length < nums1.length) {
+    return intersect(nums2, nums1)
+  }
+  const ans = []
+  const map = {}
+  let p = 0
+  for (const i of nums1) {
+    if (map[i]) {
+      map[i]++
+    } else {
+      map[i] = 1
+    }
+  }
+  for (const i of nums2) {
+    if (map[i] > 0) {
+      map[i]--
+      ans.push(i)
+    }
+  }
+  return ans
+}
 ```
