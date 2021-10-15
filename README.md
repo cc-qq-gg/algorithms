@@ -898,11 +898,7 @@ var intersect = function (nums1, nums2) {
   const map = {}
   let p = 0
   for (const i of nums1) {
-    if (map[i]) {
-      map[i]++
-    } else {
-      map[i] = 1
-    }
+    map[i] ? map[i]++ : (map[i] = 1)
   }
   for (const i of nums2) {
     if (map[i] > 0) {
@@ -911,5 +907,28 @@ var intersect = function (nums1, nums2) {
     }
   }
   return ans
+}
+```
+
+动态规划：买股票的最佳时机
+
+```js
+class Solution {
+    public int maxProfit(int[] prices) {
+        // 只需要找到最小及格
+        // 遍历每一项，如果小于最小价格，替换之
+        // 否则，计算利润
+        // 这里的设最小值为最大值，仿佛几何题做延长线
+        int minPrice = Integer.MAX_VALUE;
+        int maxProfit = 0;
+        for (int i = 0; i <prices.length; i++){
+            if(prices[i] < minPrice) {
+                minPrice = prices[i];
+            } else if(prices[i] - minPrice > maxProfit){
+                maxProfit = prices[i] - minPrice;
+            }
+        }
+        return maxProfit;
+    }
 }
 ```
