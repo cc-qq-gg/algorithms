@@ -932,3 +932,77 @@ class Solution {
     }
 }
 ```
+
+重塑矩阵
+
+```js
+var matrixReshape = function (mat, r, c) {
+  const row = mat.length
+  const col = mat[0].length
+  // 如果不可行，返回原矩阵
+  if (row * col !== r * c) {
+    return mat
+  }
+  const ans = []
+  let currentRow = 0
+  let count = 1
+  for (const n of mat) {
+    for (const i of n) {
+      ;(ans[currentRow] || (ans[currentRow] = [])).push(i)
+      if (count++ % c === 0) {
+        currentRow++
+      }
+    }
+  }
+  return ans
+}
+```
+
+杨辉三角
+
+```js
+// 80ms
+var generate = function (numRows) {
+  const ans = [[]]
+  for (let i = 0; i < numRows; i++) {
+    const temp = []
+    temp.push(1)
+    for (let j = 0; j < ans[i].length - 1; j++) {
+      temp.push(ans[i][j] + ans[i][j + 1])
+    }
+    if (i > 0) {
+      temp.push(1)
+    }
+    ans.push(temp)
+  }
+  ans.unshift()
+  return ans
+}
+
+var generate = function (numRows) {
+  const ans = []
+  for (let i = 0; i < numRows; i++) {
+    const row = []
+    for (let j = 0; j <= i; j++) {
+      if (j === 0 || j === i) {
+        row.push(1)
+      } else {
+        row.push(ans[i - 1][j - 1] + ans[i - 1][j])
+      }
+    }
+    ans.push(row)
+  }
+  return ans
+  // 简化
+var generate = function (numRows) {
+  const ans = []
+  for (let i = 0; i < numRows; i++) {
+    const row = new Array(i + 1).fill(1)
+    for (let j = 1; j < i - 1; j++) {
+      row[j] = ans[i - 1][j - 1] + ans[i - 1][j]
+    }
+    ans.push(row)
+  }
+  return ans
+}
+```
