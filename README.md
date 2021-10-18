@@ -1006,3 +1006,66 @@ var generate = function (numRows) {
   return ans
 }
 ```
+
+有效数独
+
+```java
+// 2ms
+class Solution {
+    public boolean isValidSudoku(char[][] board) {
+        // 计数每行
+        int[][] rows = new int[9][9];
+        // 计数每列
+        int[][] cols = new int[9][9];
+        // 计数每个九宫格
+        int[][][] subboxs = new int[3][3][9];
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                char n = board[i][j];
+                if (n != '.') {
+                    // 数独数字为1-9，对应的index为0-8
+                    int index = n - '0' - 1;
+                    // 记录对应行，列，九宫格
+                    int rowCount = ++rows[i][index];
+                    int colsCount = ++cols[j][index];
+                    int subboxsCount = ++subboxs[i/3][j/3][index];
+                    // 每轮记录完成，检查是否有计数
+                    if(rowCount > 1 || colsCount > 1 || subboxsCount > 1) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+}
+```
+
+```js
+/**
+ * @param {character[][]} board
+ * @return {boolean}
+ */
+// 82ms
+var isValidSudoku = function (board) {
+  const rows = new Array(9).fill(0).map(() => new Array(9).fill(0))
+  const cols = new Array(9).fill(0).map(() => new Array(9).fill(0))
+  const subboxs = new Array(3).fill(0).map(() => new Array(3).fill(0).map(() => new Array(9).fill(0)))
+  for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
+      const n = board[i][j]
+      if (n !== '.') {
+        //    const index = n - 1;
+        const index = n.charCodeAt() - '0'.charCodeAt() - 1
+        const rowCount = ++rows[i][index]
+        const colCount = ++cols[j][index]
+        const subboxCount = ++subboxs[Math.floor(i / 3)][Math.floor(j / 3)][index]
+        if (rowCount > 1 || colCount > 1 || subboxCount > 1) {
+          return false
+        }
+      }
+    }
+  }
+  return true
+}
+```
