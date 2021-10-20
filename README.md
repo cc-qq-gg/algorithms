@@ -1147,7 +1147,11 @@ class Solution {
 ```
 
 ```js
-// 使用一个标记变量，最后更改标记首列
+// 三个方法都是利用数组标记的方式处理，
+// 记录需要修改的行和列并修改，修改时需要注意
+// 防止修改标记数组导致的结果错误，
+
+// 比如，使用一个标记变量，但从最后更改标记首列，
 /**
  * @param {number[][]} matrix
  * @return {void} Do not return anything, modify matrix in-place instead.
@@ -1181,5 +1185,28 @@ var setZeroes = function (matrix) {
       matrix[i][0] = 0
     }
   }
+}
+```
+
+字符串中的第一个唯一字符
+
+```js
+// 储存字母频次
+var firstUniqChar = function (s) {
+  const map = {}
+  for (const n of s) {
+    if (map[n]) {
+      // 设置成布尔值也可以，主要为了记录
+      map[n]++
+    } else {
+      map[n] = 1
+    }
+  }
+  for (const n of s) {
+    if (map[n] === 1) {
+      return n
+    }
+  }
+  return -1
 }
 ```
