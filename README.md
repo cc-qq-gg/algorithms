@@ -915,7 +915,7 @@ var intersect = function (nums1, nums2) {
 ```js
 class Solution {
     public int maxProfit(int[] prices) {
-        // 只需要找到最小及格
+        // 只需要找到最小价格
         // 遍历每一项，如果小于最小价格，替换之
         // 否则，计算利润
         // 这里的设最小值为最大值，仿佛几何题做延长线
@@ -958,7 +958,7 @@ var matrixReshape = function (mat, r, c) {
 }
 ```
 
-杨辉三角
+动态规划：杨辉三角
 
 ```js
 // 80ms
@@ -1007,7 +1007,7 @@ var generate = function (numRows) {
 }
 ```
 
-有效数独
+矩阵：有效数独
 
 ```java
 // 2ms
@@ -1188,7 +1188,7 @@ var setZeroes = function (matrix) {
 }
 ```
 
-字符串中的第一个唯一字符
+哈希表：字符串中的第一个唯一字符
 
 ```js
 // 储存字母频次
@@ -1208,5 +1208,29 @@ var firstUniqChar = function (s) {
     }
   }
   return -1
+}
+```
+
+哈希表：赎金信：
+
+> 判断 ransomNote 能否由 magazine 构成，magazine 中的字符只能使用一次
+
+```js
+var canConstruct = function (ransomNote, magazine) {
+  const map = {}
+  for (const n of ransomNote) {
+    map[n] ? map[n]++ : (map[n] = 1)
+  }
+  for (const n of magazine) {
+    if (map[n]) {
+      map[n]--
+    }
+  }
+  for (const key in map) {
+    if (map[key] !== 0) {
+      return false
+    }
+  }
+  return true
 }
 ```
