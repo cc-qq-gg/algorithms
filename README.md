@@ -1234,3 +1234,88 @@ var canConstruct = function (ransomNote, magazine) {
   return true
 }
 ```
+
+哈希表：有效的字母异位词
+
+```js
+// 哈希表
+var isAnagram = function (s, t) {
+  const map = {}
+  for (const n of s) {
+    map[n] ? map[n]++ : (map[n] = 1)
+  }
+  for (const n of t) {
+    if (map[n]) map[n]--
+    else return false
+  }
+  for (const key in map) {
+    if (map[key] !== 0) {
+      return false
+    }
+  }
+  return true
+}
+// 数组
+var isAnagram = function (s, t) {
+  if (s.length !== t.length) {
+    return false
+  }
+  // 用上个数组记录字母频次
+  const table = new Array(26).fill(0)
+  const aCode = 'a'.codePointAt()
+  const getIndex = n => n.codePointAt() - aCode
+  for (const n of s) {
+    table[getIndex(n)]++
+  }
+  for (const n of t) {
+    const num = --table[getIndex(n)]
+    if (num < 0) return false
+  }
+  return true
+}
+```
+
+哈希表：环形链表
+
+```java
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+ // 用哈希表记录是否存在就行
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        Set<ListNode> seen = new HashSet<ListNode>();
+        while(head != null){
+            if(!seen.add(head)){
+                return true;
+            }
+            head = head.next;
+        }
+        return false;
+    }
+}
+```
+
+js 版
+
+```js
+var hasCycle = function (head) {
+  const map = new Map()
+  while (head) {
+    if (map.has(head)) {
+      return true
+    }
+    map.set(head, true)
+    head = head.next
+  }
+  return false
+}
+```
