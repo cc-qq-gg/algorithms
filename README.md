@@ -1319,3 +1319,99 @@ var hasCycle = function (head) {
   return false
 }
 ```
+
+链表：合并两个有序链表
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        ListNode prehead = new ListNode(-1);
+        // 指针
+        ListNode pre = prehead;
+        while(l1 != null && l2 != null) {
+           if(l1.val <= l2.val) {
+               pre.next = l1;
+               // 移动l1指针
+               l1 = l1.next;
+           } else {
+               pre.next = l2;
+               // 移动l2指针
+               l2 = l2.next;
+           }
+           // 移动pre指针
+           pre = pre.next;
+        }
+
+        // 连接迭代完成后剩下的部分
+        pre.next = l1 == null ? l2 : l1;
+
+        return prehead.next;
+    }
+}
+```
+
+链表，递归：移除链表元素
+
+```js
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @param {number} val
+ * @return {ListNode}
+ */
+var removeElements = function (head, val) {
+  if (head === null) {
+    return head
+  }
+  head.next = removeElements(head.next, val)
+  return head.val === val ? head.next : head
+}
+```
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode removeElements(ListNode head, int val) {
+      // 创建一个节点
+      ListNode dummyHead = new ListNode(0);
+      dummyHead.next = head;
+      // 创建一个指针节点
+      ListNode cur = dummyHead;
+      while(cur.next != null) {
+          // 如果下一个节点是需要删除的，跳过
+          if(cur.next.val == val) {
+              cur.next = cur.next.next;
+          } else {
+            // 移动指针
+              cur = cur.next;
+          }
+      }
+      return dummyHead.next;
+    }
+}
+```
