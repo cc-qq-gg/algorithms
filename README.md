@@ -1415,37 +1415,79 @@ class Solution {
     }
 }
 ```
+
 双指针：反转链表
+
 ```js
 /**
  * @param {ListNode} head
  * @return {ListNode}
  */
 var reverseList = function (head) {
-    // 双指针思路
-    let prev = null
-    let cur = head
-    while (cur !== null) {
-        const next = cur.next
-        cur.next = prev
-        prev = cur
-        cur = next
-    }
-    return prev
-};
+  // 双指针思路
+  let prev = null
+  let cur = head
+  while (cur !== null) {
+    const next = cur.next
+    cur.next = prev
+    prev = cur
+    cur = next
+  }
+  return prev
+}
 ```
+
 删除排序链表中的重复元素，和删除指定值节点思路一样
+
 ```js
 var deleteDuplicates = function (head) {
-    if (!head) return head
-    let cur = head
-    while (cur.next) {
-        if (cur.val === cur.next.val) {
-            cur.next = cur.next.next
-        } else {
-            cur = cur.next
-        }
+  if (!head) return head
+  let cur = head
+  while (cur.next) {
+    if (cur.val === cur.next.val) {
+      cur.next = cur.next.next
+    } else {
+      cur = cur.next
     }
-    return head
-};
+  }
+  return head
+}
+```
+
+栈：有效的括号
+
+```js
+var isValid = function (s) {
+  // 非对称时，停止遍历
+  const n = s.length
+  if (n % 2 === 1) {
+    return false
+  }
+  const pairs = {
+    ')': '(',
+    ']': '[',
+    '}': '{'
+  }
+  const stk = []
+  // 先遇到的右括号先闭合，后遇到的左括号先闭合
+  // 根据这个特点，将最新的左括号放到栈首，待验证
+  // 验证最新的右括号于栈首左括号能够配对
+  // 失败：或待验证列表为空，没有对应的L
+  for (const ch of s) {
+    // 遇到右括号，判断配对
+    if (pairs[ch]) {
+      // 没有左括号，或者左括号不对应时，则配对失败
+      if (!stk.length || stk[stk.length - 1] !== pairs[ch]) {
+        return false
+      }
+      // 配对成功
+      stk.pop()
+    } else {
+      // 记录最新的左括号到栈首
+      stk.push(ch)
+    }
+  }
+  // 待验证列表是否为空
+  return !stk.length
+}
 ```
