@@ -1459,8 +1459,7 @@ var deleteDuplicates = function (head) {
 ```js
 var isValid = function (s) {
   // 非对称时，停止遍历
-  const n = s.length
-  if (n % 2 === 1) {
+  if (s.length % 2 === 1) {
     return false
   }
   const pairs = {
@@ -1489,5 +1488,93 @@ var isValid = function (s) {
   }
   // 待验证列表是否为空
   return !stk.length
+}
+```
+
+java 版
+
+```java
+class Solution {
+    public boolean isValid(String s) {
+        if(s.length() % 2 == 1) {
+            return false;
+        }
+        Map<Character, Character> pairs = new HashMap<Character, Character>() {{
+            put(')', '(');
+            put(']', '[');
+            put('}', '{');
+        }};
+        Deque<Character> stack = new LinkedList<Character>();
+        for (int i = 0; i < s.length(); i++) {
+            Character ch = s.charAt(i);
+            // 右括号，验证匹配
+            if (pairs.containsKey(ch)) {
+                // 没有左括号，或者不匹配
+                if (stack.isEmpty() || stack.peek() != pairs.get(ch)) {
+                    return false;
+                } else {
+                   // 匹配成功，出栈
+                   stack.pop();
+                }
+            } else {
+                 // 添加左括号到栈首
+                 stack.push(ch);
+            }
+
+    }
+    return stack.isEmpty();
+}
+}
+```
+用栈实现队列
+```js
+/**
+ * Your MyQueue object will be instantiated and called as such:
+ * var obj = new MyQueue()
+ * obj.push(x)  添加到队末
+ * var param_2 = obj.pop()  取出并返回队末元素
+ * var param_3 = obj.peek() 返回队末元素
+ * var param_4 = obj.empty()
+ */
+// 队列：先进先出
+// 栈：后进先出
+// 即，用后进先出的方式实现先进先出
+// 具体实现：两个栈，一个进栈，一个出栈，
+// push时，直接添加到进栈
+// pop时从出栈弹出先进的元素
+// 既然栈是后进先出，那么将一个栈的所有元素弹出并压入另一个栈后，
+// 再出栈就实现了先进先出的效果，
+// 具体出栈时，如果出栈为空，将入栈【全部】压入到出栈，出栈弹出元素
+var MyQueue = function() {
+    this.inStack = [];
+    this.outStack = [];
+};
+
+MyQueue.prototype.push = function(x) {
+    this.inStack.push(x);
+};
+
+MyQueue.prototype.pop = function() {
+    if (!this.outStack.length) {
+        this.in2out();
+    }
+    return this.outStack.pop();
+};
+
+MyQueue.prototype.peek = function() {
+    if (!this.outStack.length) {
+        this.in2out();
+    }
+    return this.outStack[this.outStack.length - 1];
+};
+
+MyQueue.prototype.empty = function() {
+    return this.outStack.length === 0 && this.inStack.length === 0;
+};
+
+MyQueue.prototype.in2out = function() {
+    while (this.inStack.length) {
+        this.outStack.push(this.inStack.pop());
+    }
 }
 ```
