@@ -1526,7 +1526,9 @@ class Solution {
 }
 }
 ```
+
 用栈实现队列
+
 ```js
 /**
  * Your MyQueue object will be instantiated and called as such:
@@ -1545,36 +1547,92 @@ class Solution {
 // 既然栈是后进先出，那么将一个栈的所有元素弹出并压入另一个栈后，
 // 再出栈就实现了先进先出的效果，
 // 具体出栈时，如果出栈为空，将入栈【全部】压入到出栈，出栈弹出元素
-var MyQueue = function() {
-    this.inStack = [];
-    this.outStack = [];
-};
+var MyQueue = function () {
+  this.inStack = []
+  this.outStack = []
+}
 
-MyQueue.prototype.push = function(x) {
-    this.inStack.push(x);
-};
+MyQueue.prototype.push = function (x) {
+  this.inStack.push(x)
+}
 
-MyQueue.prototype.pop = function() {
-    if (!this.outStack.length) {
-        this.in2out();
+MyQueue.prototype.pop = function () {
+  if (!this.outStack.length) {
+    this.in2out()
+  }
+  return this.outStack.pop()
+}
+
+MyQueue.prototype.peek = function () {
+  if (!this.outStack.length) {
+    this.in2out()
+  }
+  return this.outStack[this.outStack.length - 1]
+}
+
+MyQueue.prototype.empty = function () {
+  return this.outStack.length === 0 && this.inStack.length === 0
+}
+
+MyQueue.prototype.in2out = function () {
+  while (this.inStack.length) {
+    this.outStack.push(this.inStack.pop())
+  }
+}
+```
+
+递归：二叉树的前序排列
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+       List<Integer> result = new ArrayList();
+       preorder(root, result);
+       return result;
     }
-    return this.outStack.pop();
-};
-
-MyQueue.prototype.peek = function() {
-    if (!this.outStack.length) {
-        this.in2out();
-    }
-    return this.outStack[this.outStack.length - 1];
-};
-
-MyQueue.prototype.empty = function() {
-    return this.outStack.length === 0 && this.inStack.length === 0;
-};
-
-MyQueue.prototype.in2out = function() {
-    while (this.inStack.length) {
-        this.outStack.push(this.inStack.pop());
+    public void preorder(TreeNode head, List<Integer> res) {
+        if(head == null) return;
+        res.add(head.val);
+        preorder(head.left,res);
+        preorder(head.right,res);
     }
 }
+
+class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<Integer>();
+        if (root == null) {
+            return res;
+        }
+
+        Deque<TreeNode> stack = new LinkedList<TreeNode>();
+        TreeNode node = root;
+        while (!stack.isEmpty() || node != null) {
+            while (node != null) {
+                res.add(node.val);
+                stack.push(node);
+                node = node.left;
+            }
+            node = stack.pop();
+            node = node.right;
+        }
+        return res;
+    }
+}
+
 ```
