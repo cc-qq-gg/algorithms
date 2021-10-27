@@ -1582,7 +1582,7 @@ MyQueue.prototype.in2out = function () {
 ```
 
 递归：二叉树的前序排列
-
+> 根——>左——>右
 ```java
 /**
  * Definition for a binary tree node.
@@ -1622,6 +1622,7 @@ class Solution {
 
         Deque<TreeNode> stack = new LinkedList<TreeNode>();
         TreeNode node = root;
+        // 这种方法也类似于递归，遍历左右，显式的方式
         while (!stack.isEmpty() || node != null) {
             while (node != null) {
                 res.add(node.val);
@@ -1635,4 +1636,60 @@ class Solution {
     }
 }
 
+```
+
+二叉树中序遍历
+> 左——>根——>右
+
+```js
+// 这样的递归比较好理解
+var inorderTraversal = function (root) {
+  const res = []
+  inorder(root, res)
+  return res
+}
+function inorder(node, res) {
+  if (!node) {
+    return
+  }
+  inorder(node.left, res)
+  res.push(node.val)
+  inorder(node.right, res)
+}
+
+// 迭代的方式
+// 尝试用迭代的方式，写一下
+var inorderTraversal = function (root) {
+  const stack = []
+  const result = []
+  while (stack.length || root) {
+    // 关键在于压栈的顺序，要达到出栈的顺序
+    while (root) {
+      stack.push(root)
+      root = root.left
+    }
+    root = stack.pop()
+    result.push(root.val)
+    root = root.right
+  }
+  return result
+}
+```
+
+后序遍历：二叉树
+> 左——>右——>根
+
+```js
+var postorderTraversal = function (root) {
+  const result = []
+}
+function inorder(root, res) {
+  if (!root) return
+  inorder(root.left, res)
+  inorder(root.right, res)
+  res.push(root.val)
+}
+
+// 迭代的方式，todo，
+// Morris的方式，todo
 ```
