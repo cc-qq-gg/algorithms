@@ -1582,7 +1582,9 @@ MyQueue.prototype.in2out = function () {
 ```
 
 递归：二叉树的前序排列
+
 > 根——>左——>右
+
 ```java
 /**
  * Definition for a binary tree node.
@@ -1639,6 +1641,7 @@ class Solution {
 ```
 
 二叉树中序遍历
+
 > 左——>根——>右
 
 ```js
@@ -1677,6 +1680,7 @@ var inorderTraversal = function (root) {
 ```
 
 后序遍历：二叉树
+
 > 左——>右——>根
 
 ```js
@@ -1690,6 +1694,19 @@ function inorder(root, res) {
   res.push(root.val)
 }
 
+// 这种方式和递归的方式一样比较好理解
+var postorderTraversal = function (root) {
+  const result = []
+  const stack = []
+  while (stack.length || root) {
+    if (root instanceof TreeNode) {
+      stack.push(root.val, root.right, root.left)
+    } else if (root) {
+      result.push(root)
+    }
+    root = stack.pop()
+  }
+}
 // 迭代的方式，todo，
 // Morris的方式，todo
 ```
