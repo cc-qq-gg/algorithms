@@ -1686,6 +1686,8 @@ var inorderTraversal = function (root) {
 ```js
 var postorderTraversal = function (root) {
   const result = []
+  inorder(root, result)
+  return result
 }
 function inorder(root, res) {
   if (!root) return
@@ -1709,4 +1711,37 @@ var postorderTraversal = function (root) {
 }
 // 迭代的方式，todo，
 // Morris的方式，todo
+```
+
+只出现一次的数字，其他都出现两次
+
+```js
+/** 集合，哈希表，都可以
+ * @param {number[]} nums
+ * @return {number}
+ */
+var singleNumber = function (nums) {
+  const map = new Map()
+  for (const n of nums) {
+    if (map.has(n)) {
+      map.delete(n)
+      continue
+    }
+    map.set(n, true)
+  }
+  for (const n of map.keys()) {
+    return n
+  }
+}
+// 异或运算，表示两个二级制不相同，返回1，相同返回0
+// 特质一：任何数和0做异或运算，结果任何数
+// 特质二：任何数和自身做异或运算，结果为0
+// 特质三：异或运算满足交换律和结合律，类似乘除法顺序不影响结果
+var singleNumber = function (nums) {
+  let result = 0
+  for (const n of nums) {
+    result ^= n
+  }
+  return result
+}
 ```
