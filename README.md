@@ -1745,3 +1745,60 @@ var singleNumber = function (nums) {
   return result
 }
 ```
+
+### 哈希表：多数元素
+
+```js
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var majorityElement = function (nums) {
+  const map = {}
+  for (const n of nums) {
+    if (map[n]) {
+      map[n]++
+    } else {
+      map[n] = 1
+    }
+  }
+  let target
+  let max = 0
+  for (const key in map) {
+    if (map[key] > max) {
+      max = map[key]
+      target = key
+    }
+  }
+  return target
+}
+```
+
+### 颜色分类
+
+```js
+/**
+ * @param {number[]} nums
+ * @return {void} Do not return anything, modify nums in-place instead.
+ */
+var sortColors = function (nums) {
+  let n = nums.length
+  let ptr = 0
+  for (let i = 0; i < n; ++i) {
+    if (nums[i] == 0) {
+      let temp = nums[i]
+      nums[i] = nums[ptr]
+      nums[ptr] = temp
+      ++ptr
+    }
+  }
+  for (let i = ptr; i < n; ++i) {
+    if (nums[i] == 1) {
+      let temp = nums[i]
+      nums[i] = nums[ptr]
+      nums[ptr] = temp
+      ++ptr
+    }
+  }
+}
+```
