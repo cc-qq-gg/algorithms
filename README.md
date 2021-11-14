@@ -394,7 +394,7 @@ var checkInclusion = function (s1, s2) {
   if (cnt1.toString() === cnt2.toString()) {
     return true
   }
-  // 滑动窗口，每次比较
+  // 滑动窗口，每次比较!
   for (let i = n; i < m; ++i) {
     ++cnt2[s2[i].charCodeAt() - aCharCode]
     --cnt2[s2[i - n].charCodeAt() - aCharCode]
@@ -1800,5 +1800,28 @@ var sortColors = function (nums) {
       ++ptr
     }
   }
+}
+```
+
+### 合并区间
+
+```js
+var merge = function (intervals) {
+  intervals.sort((a, b) => a[0] - b[0])
+  const result = [intervals[0]]
+  for (let i = 1; i < intervals.length; i++) {
+    const tail = result[result.length - 1]
+    const cur = intervals[i]
+    // 重叠，但不包含，才进行合并
+    if (tail[1] >= cur[0]) {
+      if (tail[1] < cur[1]) {
+        tail[1] = cur[1]
+      }
+    } else {
+      // 不重叠，添加
+      result.push(cur)
+    }
+  }
+  return result
 }
 ```
