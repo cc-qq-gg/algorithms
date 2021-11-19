@@ -1825,3 +1825,92 @@ var merge = function (intervals) {
   return result
 }
 ```
+
+### 旋转图像
+
+```js
+// 暴力解法
+var rotate = function (matrix) {
+  const n = matrix.length
+
+  const matrix_new = new Array(n).fill(0).map(() => new Array(n).fill(0))
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      matrix_new[j][n - i - 1] = matrix[i][j]
+    }
+  }
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      matrix[i][j] = matrix_new[i][j]
+    }
+  }
+}
+// 原地旋转
+var rotate = function (matrix) {
+  const n = matrix.length
+  for (let i = 0; i < Math.floor(n / 2); ++i) {
+    for (let j = 0; j < Math.floor((n + 1) / 2); ++j) {
+      const temp = matrix[i][j]
+      matrix[i][j] = matrix[n - j - 1][i]
+      matrix[n - j - 1][i] = matrix[n - i - 1][n - j - 1]
+      matrix[n - i - 1][n - j - 1] = matrix[j][n - i - 1]
+      matrix[j][n - i - 1] = temp
+    }
+  }
+}
+// 用反转代替旋转
+var rotate = function (matrix) {
+  const n = matrix.length
+  // 水平翻转
+  for (let i = 0; i < Math.floor(n / 2); i++) {
+    for (let j = 0; j < n; j++) {
+      ;[matrix[i][j], matrix[n - i - 1][j]] = [matrix[n - i - 1][j], matrix[i][j]]
+    }
+  }
+  // 主对角线翻转
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < i; j++) {
+      ;[matrix[i][j], matrix[j][i]] = [matrix[j][i], matrix[i][j]]
+    }
+  }
+}
+```
+
+### 螺旋矩阵
+
+```js
+var generateMatrix = function (n) {
+  const maxNum = n * n
+  const matrix = new Array(n).fill(0).map(() => new Array(n).fill(0))
+  // 初始值
+  let curNum = 1
+  // 初始坐标
+  let row = 0,
+    column = 0
+  // 定义顺时针方向，右下左上
+  const directions = [
+    [0, 1],
+    [1, 0],
+    [0, -1],
+    [-1, 0]
+  ]
+  // 当前方向
+  let directionIndex = 0
+  while (curNum <= maxNum) {
+
+    matrix[row][column] = curNum
+    curNum++
+
+    // 如果下一个位置越界或者已经被填值，调整方向
+    const nextRow = row + directions[directionIndex][0]
+    const nextColumn = column + directions[directionIndex][1]
+    if (nextRow < 0 || nextRow >= n || nextColumn < 0 || nextColumn >= n || matrix[nextRow][nextColumn] !== 0) {
+      directionIndex = (directionIndex + 1) % 4 // 顺时针旋转至下一个方向
+    }
+    
+    row = row + directions[directionIndex][0]
+    column = column + directions[directionIndex][1]
+  }
+  return matrix
+}
+```
