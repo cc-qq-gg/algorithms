@@ -404,8 +404,37 @@ var checkInclusion = function (s1, s2) {
   }
   return false
 }
-
-// 80ms 性能好到令人胆寒
+// nice
+var checkInclusion = function (s1, s2) {
+  // toString 方法效率较低
+  function equal(a, b) {
+    for (let i = 0; i < a.length; i++) {
+      if (a[i] !== b[i]) return false
+    }
+    return true
+  }
+  const arrP = new Array(26).fill(0),
+    arr = new Array(26).fill(0),
+    len1 = s1.length,
+    aCharCode = 'a'.charCodeAt(),
+    getIndex = char => char.charCodeAt() - aCharCode
+  let count = 0
+  for (const n of s1) {
+    arrP[getIndex(n)]++
+  }
+  for (const n of s2) {
+    count++
+    arr[getIndex(n)]++
+    if (count >= len1) {
+      if (equal(arr, arrP)) return true
+      else {
+        arr[getIndex(s2[count - len1])]--
+      }
+    }
+  }
+  return false
+}
+// 80ms
 var checkInclusion = function checkInclusion(s1, s2) {
   const n = s1.length
   const m = s2.length
@@ -1897,7 +1926,6 @@ var generateMatrix = function (n) {
   // 当前方向
   let directionIndex = 0
   while (curNum <= maxNum) {
-
     matrix[row][column] = curNum
     curNum++
 
@@ -1907,7 +1935,7 @@ var generateMatrix = function (n) {
     if (nextRow < 0 || nextRow >= n || nextColumn < 0 || nextColumn >= n || matrix[nextRow][nextColumn] !== 0) {
       directionIndex = (directionIndex + 1) % 4 // 顺时针旋转至下一个方向
     }
-    
+
     row = row + directions[directionIndex][0]
     column = column + directions[directionIndex][1]
   }
