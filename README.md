@@ -1942,3 +1942,39 @@ var generateMatrix = function (n) {
   return matrix
 }
 ```
+
+### 在排序数组中查找元素的第一个和最后一个位置
+
+```js
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+const binarySearch = (nums, target, lower) => {
+  let left = 0,
+    right = nums.length - 1,
+    ans = nums.length // 假设不存在
+  while (left <= right) {
+    const mid = ((left + right) / 2) | 0
+    const cur = nums[mid]
+    // 查找的是第一个大于和第一个大于等于target的index
+    if (cur > target || (lower && cur >= target)) {
+      right = mid - 1
+      ans = mid
+    } else {
+      left = mid + 1
+    }
+  }
+  return ans
+}
+var searchRange = function (nums, target) {
+  let ans = [-1, -1]
+  const leftIdx = binarySearch(nums, target, true)
+  const rightIdx = binarySearch(nums, target, false) - 1
+  if (leftIdx <= rightIdx && rightIdx < nums.length && nums[leftIdx] === target && nums[rightIdx] === target) {
+    return [leftIdx, rightIdx]
+  }
+  return ans
+}
+```
