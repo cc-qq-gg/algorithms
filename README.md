@@ -1959,6 +1959,7 @@ const binarySearch = (nums, target, lower) => {
     const mid = ((left + right) / 2) | 0
     const cur = nums[mid]
     // 查找的是第一个大于和第一个大于等于target的index
+    // 看了go的解法，明了
     if (cur > target || (lower && cur >= target)) {
       right = mid - 1
       ans = mid
