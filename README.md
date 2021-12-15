@@ -1979,3 +1979,129 @@ var searchRange = function (nums, target) {
   return ans
 }
 ```
+
+### 搜索螺旋数组
+
+```java
+class Solution {
+    public int search(int[] nums, int target) {
+     int n = nums.length;
+     if (n == 0) {
+         return -1;
+     }
+     if (n == 1) {
+         return nums[0] == target ? 0 : -1;
+     }
+     int l = 0, r = n - 1;
+     while(l <= r) {
+         int mid = (l + r) / 2;
+         if (nums[mid] == target) {
+             return mid;
+         }
+         // 关键在于，在有序区间进行二分查找，不遗漏，不重复
+         // 左区间[0,mid], 右区间(mid, n -1]
+         // 左边为有序
+         if (nums[0] <= nums[mid]) {
+             // 在左区间
+            if (nums[0] <= target && target <= nums[mid]) {
+                r = mid - 1;
+            } else {
+                l = mid + 1;
+            }
+         } else {
+             if (nums[mid] < target && target <= nums[n - 1]) {
+                 l = mid + 1;
+             } else {
+                 r = mid - 1;
+             }
+         }
+     }
+     return -1;
+    }
+}
+```
+
+### 搜索二维矩阵
+
+```js
+/**
+ * @param {number[][]} matrix
+ * @param {number} target
+ * @return {boolean}
+ */
+// m + n
+var searchMatrix = function (matrix, target) {
+  // 以左下角为坐标点，建立坐标系
+  if (!matrix.length) return false
+  let x = matrix.length - 1,
+    y = 0
+  while (x >= 0 && y < matrix[0].length) {
+    const cur = matrix[x][y]
+    if (cur === target) return true
+    else if (cur < target) y++
+    else x--
+  }
+  return false
+}
+// 两次二分查找 log(m+n)
+var searchMatrix = function (matrix, target) {
+  const rowIndex = binarySearchFirstColumn(matrix, target)
+  if (rowIndex < 0) {
+    return false
+  }
+  return binarySearchRow(matrix[rowIndex], target)
+}
+
+const binarySearchFirstColumn = (matrix, target) => {
+  let low = -1,
+    high = matrix.length - 1
+  while (low < high) {
+    const mid = Math.floor((high - low + 1) / 2) + low
+    if (matrix[mid][0] <= target) {
+      low = mid
+    } else {
+      high = mid - 1
+    }
+  }
+  return low
+}
+
+const binarySearchRow = (row, target) => {
+  let low = 0,
+    high = row.length - 1
+  while (low <= high) {
+    const mid = Math.floor((high - low) / 2) + low
+    if (row[mid] == target) {
+      return true
+    } else if (row[mid] > target) {
+      high = mid - 1
+    } else {
+      low = mid + 1
+    }
+  }
+  return false
+}
+```
+
+### 寻找旋转数组中的最小值
+
+```js
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+// 最后一个元素x，最小值右侧一定小于x，右侧一定大于x
+var findMin = function (nums) {
+  let low = 0
+  let high = nums.length - 1
+  while (low < high) {
+    const pivot = ((low + high) / 2) | 0
+    if (nums[pivot] < nums[high]) {
+      high = pivot
+    } else {
+      low = pivot + 1
+    }
+  }
+  return nums[low]
+}
+```
