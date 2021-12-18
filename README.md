@@ -2090,7 +2090,7 @@ const binarySearchRow = (row, target) => {
  * @param {number[]} nums
  * @return {number}
  */
-// 最后一个元素x，最小值右侧一定小于x，右侧一定大于x
+// 最后一个元素x，最小值右侧一定小于等于x，右侧一定大于x
 var findMin = function (nums) {
   let low = 0
   let high = nums.length - 1
@@ -2103,5 +2103,131 @@ var findMin = function (nums) {
     }
   }
   return nums[low]
+}
+```
+
+### 寻找峰值
+
+```js
+// 十分钟提交不成功，看答案
+var findPeakElement = function (nums) {
+  const n = nums.length
+  let left = 0,
+    right = n - 1,
+    ans = -1
+  while (left <= right) {
+    const mid = Math.floor((left + right) / 2)
+    if (compare(nums, mid - 1, mid) < 0 && compare(nums, mid, mid + 1) > 0) {
+      ans = mid
+      break
+    }
+    if (compare(nums, mid, mid + 1) < 0) {
+      left = mid + 1
+    } else {
+      right = mid - 1
+    }
+  }
+  return ans
+}
+
+// 辅助函数，输入下标 i，返回一个二元组 (0/1, nums[i])
+// 方便处理 nums[-1] 以及 nums[n] 的边界情况
+const get = (nums, idx) => {
+  if (idx === -1 || idx === nums.length) {
+    return [0, 0]
+  }
+  return [1, nums[idx]]
+}
+
+const compare = (nums, idx1, idx2) => {
+  const num1 = get(nums, idx1)
+  const num2 = get(nums, idx2)
+  if (num1[0] !== num2[0]) {
+    return num1[0] > num2[0] ? 1 : -1
+  }
+  if (num1[1] === num2[1]) {
+    return 0
+  }
+  return num1[1] > num2[1] ? 1 : -1
+}
+```
+
+### 删除重复节点
+
+```js
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+var deleteDuplicates = function (head) {
+  if (!head) {
+    return head
+  }
+  const dummy = new ListNode(0, head)
+  let cur = dummy
+  while (cur.next && cur.next.next) {
+    if (cur.next.val === cur.next.next.val) {
+      // 记录并删除重复节点
+      const x = cur.next.val
+      while (cur.next && cur.next.val === x) {
+        cur.next = cur.next.next
+      }
+    } else {
+      cur = cur.next
+    }
+  }
+  return dummy.next
+}
+```
+
+### 三数之和
+
+```js
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+var threeSum = function (nums) {
+  // 将数组排序后，在进行查找
+  // 每个答案一定是 a <= b <= c
+  const ans = []
+  const n = nums.length
+  nums.sort((a, b) => a - b)
+  for (let first = 0; first < n; first++) {
+    // 需要和上一次枚举的数不同
+    if (first > 0 && nums[first] === nums[first - 1]) {
+      continue
+    }
+    // c 对应的指针指向数组的最右端
+    let third = n - 1
+    const target = -nums[first]
+    // 枚举b
+    for (let second = first + 1; second < n; second++) {
+      // 需要和上次枚举的数不同
+      if (second > first + 1 && nums[second] === nums[second - 1]) {
+        continue
+      }
+      // 需要保证b的指针在c的指针的左侧
+      while (second < third && nums[second] + nums[third] > target) {
+        third--
+      }
+      // 如果指针重合，随着b后续的增加就不会
+      // 满足a+b+c=0,并且b<c了，因此可以退循环
+      if (second === third) {
+        break
+      }
+      if (nums[second] + nums[third] === target) {
+        ans.push([nums[first], nums[second], nums[third]])
+      }
+    }
+  }
+  return ans
 }
 ```
