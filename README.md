@@ -2231,3 +2231,102 @@ var threeSum = function (nums) {
   return ans
 }
 ```
+
+### 比较含退格的字符
+
+```js
+/**
+ * @param {string} s
+ * @param {string} t
+ * @return {boolean}
+ */
+var backspaceCompare = function (s, t) {
+  return build(s) === build(t)
+}
+function build(s) {
+  const arr = []
+  for (const n of s) {
+    if (n !== '#') {
+      arr.push(n)
+    } else {
+      arr.pop()
+    }
+  }
+  return arr.toString()
+}
+// 双指针
+/**
+ * @param {string} s
+ * @param {string} t
+ * @return {boolean}
+ */
+var backspaceCompare = function (s, t) {
+  // 双指针，关键在于分别找到两者对应比较的字符
+  let i = s.length - 1,
+    j = t.length - 1
+  // 记录各自应该删除的字符数，当计数等于零且不等于#时，比较
+  let skipS = 0,
+    skipT = 0
+  while (i >= 0 || j >= 0) {
+    while (i >= 0) {
+      if (s[i] === '#') {
+        skipS++
+        i--
+      } else if (skipS > 0) {
+        skipS--
+        i--
+      } else {
+        break
+      }
+    }
+    while (j >= 0) {
+      if (t[j] === '#') {
+        skipT++
+        j--
+      } else if (skipT > 0) {
+        skipT--
+        j--
+      } else {
+        break
+      }
+    }
+    if (s[i] !== t[j]) {
+      return false
+    }
+    i--
+    j--
+  }
+  return true
+}
+```
+
+### 区间列表的交集
+
+```js
+/**
+ * @param {number[][]} firstList
+ * @param {number[][]} secondList
+ * @return {number[][]}
+ */
+var intervalIntersection = function (firstList, secondList) {
+  const ans = []
+  let i = 0,
+    j = 0
+  while (i < firstList.length && j < secondList.length) {
+    // 取两者中最大左与最大右判断是否交叉
+    const low = Math.max(firstList[i][0], secondList[j][0])
+    const hight = Math.min(firstList[i][1], secondList[j][1])
+    if (low <= hight) {
+      ans.push([low, hight])
+    }
+    // 因为两个区间中右边数字最小的区间只能与另一个区间的首区间重叠
+    // 移除右边数字最小最小的区间
+    if (firstList[i][1] < secondList[j][1]) {
+      i++
+    } else {
+      j++
+    }
+  }
+  return ans
+}
+```
