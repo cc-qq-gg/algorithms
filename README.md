@@ -2330,3 +2330,33 @@ var intervalIntersection = function (firstList, secondList) {
   return ans
 }
 ```
+
+### 盛最多水的容器
+
+```js
+/**
+ * @param {number[]} height
+ * @return {number}
+ */
+// 为什么双指针的做法时正确的?
+// 设x, y分别代表左右端点、x <= y，距离为t， 容量为min(x,y)∗t=x∗t
+// 向左移动右指针，y -> y1, 距离t1, 有min(x,y1) ≤ min(x,y)
+//  如果y1 <= y , min(x,y1) ≤ min(x,y)
+//  如果y1 > y , min(x,y1) = x = min(x,y)
+// 又 t1 < t , 所有恒有 min(x,yt)∗t1 < min(x,y)∗t
+// 如果A和B相反，证明A对，那么等于证明了B错，反之亦然
+var maxArea = function (height) {
+  let l = 0, r = height.length - 1
+  let ans = 0
+  while (l < r) {
+    let area = Math.min(height[l], height[r]) * (r - l)
+    ans = Math.max(ans, area)
+    if (height[l] <= height[r]) {
+      l++
+    } else {
+      r--
+    }
+  }
+  return ans
+}
+```
