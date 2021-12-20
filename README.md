@@ -2346,7 +2346,8 @@ var intervalIntersection = function (firstList, secondList) {
 // 又 t1 < t , 所有恒有 min(x,yt)∗t1 < min(x,y)∗t
 // 如果A和B相反，证明A对，那么等于证明了B错，反之亦然
 var maxArea = function (height) {
-  let l = 0, r = height.length - 1
+  let l = 0,
+    r = height.length - 1
   let ans = 0
   while (l < r) {
     let area = Math.min(height[l], height[r]) * (r - l)
@@ -2357,6 +2358,89 @@ var maxArea = function (height) {
       r--
     }
   }
+  return ans
+}
+```
+
+### 找到字符串中的所有字母异位词
+
+```js
+/**
+ * @param {string} s
+ * @param {string} p
+ * @return {number[]}
+ */
+// 滑动窗口
+var findAnagrams = function (s, p) {
+  if (s.length < p.length) return []
+  const sArr = new Array(26).fill(0)
+  const pArr = new Array(26).fill(0)
+  const ans = []
+  for (let i = 0; i < p.length; i++) {
+    pArr[p[i].charCodeAt() - 97]++
+    sArr[s[i].charCodeAt() - 97]++
+  }
+  if (check(sArr, pArr)) ans.push(0)
+  for (let i = 0; i < s.length - p.length; i++) {
+    sArr[s[i].charCodeAt() - 97]--
+    sArr[s[i + p.length].charCodeAt() - 97]++
+    if (check(sArr, pArr)) ans.push(i + 1)
+  }
+  return ans
+}
+function check(a, b) {
+  return a.every((i, idx) => i === b[idx])
+}
+var findAnagrams = function (s, p) {
+  const sLen = s.length,
+    pLen = p.length
+
+  if (sLen < pLen) {
+    return []
+  }
+  const getIdx = s => s.charCodeAt() - 'a'.charCodeAt()
+  const ans = []
+  const count = Array(26).fill(0)
+  for (let i = 0; i < pLen; ++i) {
+    ++count[getIdx(s[i])]
+    --count[getIdx(p[i])]
+  }
+  console.log(count)
+  let differ = 0
+  for (const n of count) {
+    if (n !== 0) differ++
+  }
+
+  if (differ === 0) {
+    ans.push(0)
+  }
+
+  for (let i = 0; i < sLen - pLen; ++i) {
+    if (count[getIdx(s[i])] === 1) {
+      // 窗口中字母 s[i] 的数量与字符串 p 中的数量从不同变得相同
+      --differ
+    } else if (count[getIdx(s[i])] === 0) {
+      // 窗口中字母 s[i] 的数量与字符串 p 中的数量从相同变得不同
+      ++differ
+    }
+    // 滑动窗口
+    --count[getIdx(s[i])]
+
+    if (count[getIdx(s[i + pLen])] === -1) {
+      // 窗口中字母 s[i+pLen] 的数量与字符串 p 中的数量从不同变得相同
+      --differ
+    } else if (count[getIdx(s[i + pLen])] === 0) {
+      // 窗口中字母 s[i+pLen] 的数量与字符串 p 中的数量从相同变得不同
+      ++differ
+    }
+    // 滑动窗口
+    ++count[getIdx(s[i + pLen])]
+
+    if (differ === 0) {
+      ans.push(i + 1)
+    }
+  }
+
   return ans
 }
 ```
