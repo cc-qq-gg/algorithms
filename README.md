@@ -2444,3 +2444,33 @@ var findAnagrams = function (s, p) {
   return ans
 }
 ```
+
+### 长度最小的子数组
+
+```js
+/**
+ * @param {number} target
+ * @param {number[]} nums
+ * @return {number}
+ */
+var minSubArrayLen = function (target, nums) {
+  const len = nums.length
+  if (len === 0) return 0
+  if (len === 1) return nums[0] === target ? 1 : 0
+  let left = 0, right = 0, window = 0
+  let ans = Infinity
+  while (right < len) {
+    // 右指针增加window
+    for (; right < len && window < target; right++) {
+      window += nums[right]
+    }
+    // 左指针减window
+    while (window >= target) {
+      ans = Math.min(ans, right - left)
+      window -= nums[left]
+      left++
+    }
+  }
+  return ans === Infinity ? 0 : ans
+}
+```
