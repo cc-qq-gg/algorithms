@@ -2457,7 +2457,9 @@ var minSubArrayLen = function (target, nums) {
   const len = nums.length
   if (len === 0) return 0
   if (len === 1) return nums[0] === target ? 1 : 0
-  let left = 0, right = 0, window = 0
+  let left = 0,
+    right = 0,
+    window = 0
   let ans = Infinity
   while (right < len) {
     // 右指针增加window
@@ -2472,5 +2474,71 @@ var minSubArrayLen = function (target, nums) {
     }
   }
   return ans === Infinity ? 0 : ans
+}
+```
+
+### 乘积小于 K 的子数组
+
+```js
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+var numSubarrayProductLessThanK = function (nums, k) {
+  if (k <= 1) return 0
+  let prod = 1,
+    ans = 0,
+    left = 0
+  for (let right = 0; right < nums.length; right++) {
+    prod *= nums[right]
+    while (prod >= k) {
+      prod /= nums[left++]
+    }
+    // ？？？
+    ans += right - left + 1
+  }
+  return ans
+}
+```
+
+### 岛屿数量
+
+```java
+class Solution {
+    void dfs(char[][] grid, int r, int c) {
+        int nr = grid.length;
+        int nc = grid[0].length;
+
+        if (r < 0 || c < 0 || r >= nr || c >= nc || grid[r][c] == '0') {
+            return;
+        }
+
+        grid[r][c] = '0';
+        dfs(grid, r - 1, c);
+        dfs(grid, r + 1, c);
+        dfs(grid, r, c - 1);
+        dfs(grid, r, c + 1);
+    }
+
+    public int numIslands(char[][] grid) {
+        if (grid == null || grid.length == 0) {
+            return 0;
+        }
+
+        int nr = grid.length;
+        int nc = grid[0].length;
+        int num_islands = 0;
+        for (int r = 0; r < nr; ++r) {
+            for (int c = 0; c < nc; ++c) {
+                if (grid[r][c] == '1') {
+                    ++num_islands;
+                    dfs(grid, r, c);
+                }
+            }
+        }
+
+        return num_islands;
+    }
 }
 ```
