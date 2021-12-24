@@ -2542,3 +2542,34 @@ class Solution {
     }
 }
 ```
+
+### 省份数量
+
+```js
+/**
+ * @param {number[][]} isConnected
+ * @return {number}
+ */
+var findCircleNum = function (isConnected) {
+  const vis = new Array(isConnected.length).fill(false)
+  let ans = 0
+  //[i][j]表示i和j相连
+  function dfs(i) {
+    for (let j = 0; j < vis.length; j++) {
+      // 标记与i相连的城市j
+      if (isConnected[i][j] === 1 && !vis[j]) {
+        vis[j] = true
+        dfs(j)
+      }
+    }
+  }
+  vis.forEach((i, idx) => {
+    // 未被标记过的城市，就是省之间的边界
+    if (!i) {
+      ans++
+      dfs(idx)
+    }
+  })
+  return ans
+}
+```
