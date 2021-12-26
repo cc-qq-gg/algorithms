@@ -2658,3 +2658,46 @@ function check(s, t) {
   return check(s.left, t.left) && check(s.right, t.right)
 }
 ```
+
+### 最短路径
+
+```js
+var shortestPathBinaryMatrix = function (grid) {
+  if (grid[0][0] !== 0) return -1
+  const length = grid.length
+  // 八个方向
+  const direction = [
+    [-1, 1],
+    [0, 1],
+    [1, 1],
+    [1, 0],
+    [1, -1],
+    [0, -1],
+    [-1, -1],
+    [-1, 0]
+  ]
+  const queue = [] // bfs 队列
+  queue.push([0, 0, 1]) // 行列坐标及走过的0的个数
+  while (queue.length > 0) {
+    const [row, col, n] = queue.shift()
+    if (row == grid.length - 1 && col == grid[0].length - 1) {
+      return n // 到达终点了~
+    }
+    // 遍历八个方向
+    for (let [x, y] of direction) {
+      //不越界且符合条件 - 可走
+      const newRow = row + x
+      const newCol = col + y
+      if (
+        newRow >= 0 && newRow < length
+        && newCol >= 0 && newCol < length
+        && grid[newRow][newCol] === 0
+        ) {
+        queue.push([newRow, newCol, n + 1])
+        grid[newRow][newCol] = 1 // 走过的位置置为1 避免再次进入
+      }
+    }
+  }
+  return -1
+}
+```
