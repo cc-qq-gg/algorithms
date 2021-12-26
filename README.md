@@ -2573,3 +2573,88 @@ var findCircleNum = function (isConnected) {
   return ans
 }
 ```
+
+### 填充每一个节点的下一个右侧节点
+
+```js
+/**
+ * // Definition for a Node.
+ * function Node(val, left, right, next) {
+ *    this.val = val === undefined ? null : val;
+ *    this.left = left === undefined ? null : left;
+ *    this.right = right === undefined ? null : right;
+ *    this.next = next === undefined ? null : next;
+ * };
+ */
+
+/**
+ * @param {Node} root
+ * @return {Node}
+ */
+// 广度优先
+var connect = function (root) {
+  if (!root) return null
+  const queue = [root]
+  while (queue.length) {
+    const n = queue.length
+    // 记录上一个循环节点
+    let last = null
+    // 循环每一层
+    for (let i = 0; i < n; i++) {
+      let head = queue.shift()
+      if (head.left) {
+        queue.push(head.left)
+      }
+      if (head.right) {
+        queue.push(head.right)
+      }
+      if (i !== 0) {
+        last.next = head
+      }
+      last = head
+    }
+  }
+  return root
+}
+```
+
+### 另一棵树的子树
+
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @param {TreeNode} subRoot
+ * @return {boolean}
+ */
+// 深度优先
+// 递归，先定义边界条件
+var isSubtree = function (root, subRoot) {
+  return dfs(root, subRoot)
+}
+function dfs(s, t) {
+  if (!s) {
+    return false
+  }
+  return check(s, t) || dfs(s.left, t) || dfs(s.right, t)
+}
+
+function check(s, t) {
+  // 遍历结束
+  if (!s && !t) {
+    return true
+  }
+  // 节点不同
+  if (!s || !t || s.val !== t.val) {
+    return false
+  }
+  return check(s.left, t.left) && check(s.right, t.right)
+}
+```
